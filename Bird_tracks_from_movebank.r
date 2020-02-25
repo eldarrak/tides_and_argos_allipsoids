@@ -5,7 +5,7 @@
 load("tide.RData")# object 'Bubaque_2016_2020'
 
 library(RgoogleMaps)
-  Sys.setenv(GOOGLE_MAPS_API_KEY = "AIzaSyAVRQ1V7yrzUixLGj5s0EPD2YgY9opQuvM")
+  Sys.setenv(GOOGLE_MAPS_API_KEY = "###")
 
 library('move')
 
