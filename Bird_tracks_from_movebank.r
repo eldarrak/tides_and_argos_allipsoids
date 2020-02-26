@@ -27,7 +27,7 @@ tide<-Bubaque_2016_2020
 bird$tide<-approx(x=tide$Time,y=tide$z.m.,xout=bird$timestamp)$y
 
 #Assign DAY and NIGHT using sunset and sunrise times for the location 
-#maybe we should better use dawn and dask times, which is also possible with this package
+#maybe we should better use dawn and dusk times, which is also possible with this package
 #but it did not work for me, so need to investigate why
 
 library(maptools)
