@@ -165,7 +165,7 @@ emergence_fun<-function(fe_local, time_to_predict, tide, direction=c(-1, 0, 1), 
  
    Time_next_change <- Res2 |> last() |> select('Time')
    # now i need to get the difference
-   Result<-abs(as.numeric(difftime(time_to_predict,  Time_next_change[1,], units='mins')))
+   Result<-c(abs(as.numeric(difftime(time_to_predict,  Time_last_change[1,], units='mins'))), cur_state, abs(as.numeric(difftime(time_to_predict,  Time_next_change[1,], units='mins'))))
    }
    
    if (plot) {
