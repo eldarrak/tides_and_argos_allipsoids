@@ -9,7 +9,7 @@
 # but very likely we are in trouble somwhere earlier.
 
 emergence_fun<-function(fe_local, time_to_predict, tide, direction=c(-1, 0, 1), verbose=FALSE, plot=F) {
-    if (direction %in% c(-1, 0, 1)) stop('directions must be -1, 0 or 1')
+    if (!direction %in% c(-1, 0, 1)) stop('directions must be -1, 0 or 1')
    #direction = -1 returns time before when state changes
    # direction 0 returns current state (1 - water, 0 - dry)
    # direction 1 returns time when state will change
@@ -110,12 +110,10 @@ emergence_fun<-function(fe_local, time_to_predict, tide, direction=c(-1, 0, 1), 
    Time_last_change<-Res |> filter(iter_state != cur_state) |> last() |> select('Time')
    if (is.na(Time_last_change[1,])) Time_last_change[1,]<- Res$Time[1]
    if (direction == 0) {
-   Result<-cur_state
+        Result<-c(abs(as.numeric(difftime(time_to_predict,  Time_last_change[1,], units='mins'))), cur_state)
    }
    if (direction == -1) {
-   
-   # now i need to get the difference
-   Result<-c(abs(as.numeric(difftime(time_to_predict,  Time_last_change[1,], units='mins'))), cur_state)
+          Result<-cur_state
    }
    if (direction == 1) {
    # ok, if we want to find point in the future we should move forward for some time.
