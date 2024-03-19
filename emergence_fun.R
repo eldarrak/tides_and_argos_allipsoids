@@ -119,7 +119,7 @@ emergence_fun<-function(fe_local, time_to_predict, tide, direction=c(-1, 0, 1), 
    # ok, if we want to find point in the future we should move forward for some time.
    tide_future <- tide |> filter(Time>time_to_predict & Time < (time_to_predict + 86400))
    
-   Res2<-data.frame(Time=POSIXct(0), iter_level=numeric(0), numeric(0))
+   Res2<-data.frame(Time=as.POSIXct(0), iter_level=numeric(0), numeric(0))
    
    for (i in 1:nrow(tide_future)) {
    # ok, now we do the main loop
