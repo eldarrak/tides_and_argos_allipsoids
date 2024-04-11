@@ -9,7 +9,7 @@
 # but very likely we are in trouble somwhere earlier.
 
 emergence_fun<-function(fe_local, time_to_predict, tide, direction=c(-1, 0, 1), verbose=FALSE, plot=F) {
-    if (direction %in% c(-1, 0, 1)) stop('directions must be -1, 0 or 1')
+    if (!direction %in% c(-1, 0, 1)) stop('directions must be -1, 0 or 1')
    #direction = -1 returns time before when state changes
    # direction 0 returns current state (1 - water, 0 - dry)
    # direction 1 returns time when state will change
@@ -60,7 +60,7 @@ emergence_fun<-function(fe_local, time_to_predict, tide, direction=c(-1, 0, 1), 
    }
    # NOW we have to check if the point was ever dry after and if so we have to start from one maximum before this point, if not, then it was basically wet, so we do not need ot run the loop..
    
-   Res<-data.frame(Time=as.POSIXct(0), iter_level=numeric(0), numeric(0))
+    Res<-data.frame(Time=POSIXct(0), iter_level=numeric(0), numeric(0))
    
    for (i in 2:nrow(tide_before)) {
    # ok, now we do the main loop
@@ -110,12 +110,12 @@ emergence_fun<-function(fe_local, time_to_predict, tide, direction=c(-1, 0, 1), 
    Time_last_change<-Res |> filter(iter_state != cur_state) |> last() |> dplyr::select('Time')
    if (is.na(Time_last_change[1,])) Time_last_change[1,]<- Res$Time[1]
    if (direction == 0) {
-   Result<-cur_state
-   }
-   if (direction == -1) {
-   
    # now i need to get the difference
    Result<-c(abs(as.numeric(difftime(time_to_predict,  Time_last_change[1,], units='mins'))), cur_state)
+   }
+   if (direction == -1) {
+      Result<-cur_state
+
    }
    if (direction == 1) {
    # ok, if we want to find point in the future we should move forward for some time.
@@ -172,7 +172,7 @@ emergence_fun<-function(fe_local, time_to_predict, tide, direction=c(-1, 0, 1), 
    par(mfrow=c(1,2))
    if (direction==1) tide_before_f<-rbind(tide_before_f, tide_future)
      plot(tide_before_f$Time,tide_before_f$z.m., type='l')
-     lines(tide_before$Time,tide_before$z.m., col=' ')
+     lines(tide_before$Time,tide_before$z.m., col='green')
    
      if(direction==1) abline(v=Time_next_change[1,], col='red')
      abline(v=Time_last_change, col='red', lwd=2)
