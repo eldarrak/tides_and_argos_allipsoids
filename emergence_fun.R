@@ -72,7 +72,7 @@ emergence_fun<-function(fe_local, time_to_predict, tide, direction=c(-1, 0, 1), 
           cat('cur_tide_phase_iter', cur_tide_phase_iter, '\n')
       } 
        
-      prev_extr_level_iter<-tide_before |> filter(tide_phase=='extremum' & Time < tide_before$Time[i]) |> last() |> select(meters_to_max)
+      prev_extr_level_iter<-tide_before |> filter(tide_phase=='extremum' & Time < tide_before$Time[i]) |> last() |> dplyr::select(meters_to_max)
        if (verbose) cat('prev_extr_level_iter', as.numeric(prev_extr_level_iter)[1], '\n')
 
       if (tolower(cur_tide_phase_iter) %in% c('ebb', 'eb')) prev_extr_level_iter<--1*prev_extr_level_iter
@@ -107,7 +107,7 @@ emergence_fun<-function(fe_local, time_to_predict, tide, direction=c(-1, 0, 1), 
    cur_state<- Res$iter_state |> last()
    
    # when the state changed
-   Time_last_change<-Res |> filter(iter_state != cur_state) |> last() |> select('Time')
+   Time_last_change<-Res |> filter(iter_state != cur_state) |> last() |> dplyr::select('Time')
    if (is.na(Time_last_change[1,])) Time_last_change[1,]<- Res$Time[1]
    if (direction == 0) {
         Result<-c(abs(as.numeric(difftime(time_to_predict,  Time_last_change[1,], units='mins'))), cur_state)
@@ -132,7 +132,7 @@ emergence_fun<-function(fe_local, time_to_predict, tide, direction=c(-1, 0, 1), 
       } 
       # only check previous extremums if they are later then the current start.
       #time_last_extremum <- tide |> filter(tide_phase=='extremum' & Time < tide_future$Time[i]) |> last() |> select(Time)
-      prev_extr_level_iter<-tide |> filter(tide_phase=='extremum' & Time < tide_future$Time[i]) |> last() |> select(meters_to_max)
+      prev_extr_level_iter<-tide |> filter(tide_phase=='extremum' & Time < tide_future$Time[i]) |> last() |> dplyr::select(meters_to_max)
       
       if (verbose) cat('prev_extr_level_iter', as.numeric(prev_extr_level_iter)[1], '\n')
 
@@ -161,7 +161,7 @@ emergence_fun<-function(fe_local, time_to_predict, tide, direction=c(-1, 0, 1), 
    }
    names(Res2)<-c('Time', 'iter_level' , 'iter_state')
  
-   Time_next_change <- Res2 |> last() |> select('Time')
+   Time_next_change <- Res2 |> last() |> dplyr::select('Time')
    # now i need to get the difference
    Result<-c(abs(as.numeric(difftime(time_to_predict,  Time_last_change[1,], units='mins'))), cur_state, abs(as.numeric(difftime(time_to_predict,  Time_next_change[1,], units='mins'))))
    }
